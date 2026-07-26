@@ -113,4 +113,13 @@ Manage users, courses, quizzes, DSA problems, job postings, and platform analyti
 | OpenAI API (Future)  | Power AI-based mock interviews and resume analysis.                         |
 
 
+
+## Project Scope
+
+The initial version (Version 1.0) of PlacePrep AI will focus on building a complete placement preparation platform for students. The project will include secure user authentication, a student dashboard, Learning Management System (LMS), DSA practice, online quizzes, AI mock interviews, resume analysis, job portal, progress tracking, leaderboard, and an admin panel.
+
+The platform will be fully responsive, secure, and scalable, following modern software engineering practices. Future versions will introduce advanced AI capabilities, company recruitment features, notifications, and additional analytics based on user feedback and project enhancements.
+
+The first version focuses on solving the complete placement preparation process for students. Advanced features like company recruitment enhancements, AI study planning, and additional analytics are planned for future versions.
+
 ## Future Scope
