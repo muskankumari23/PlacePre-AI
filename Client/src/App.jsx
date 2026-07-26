@@ -1,6 +1,40 @@
+import Button from "./components/ui/Button";
+
 function App() {
+
+  const handleLogin = () => {
+    alert("Login Button Clicked");
+  };
+
+  const handleDelete = () => {
+    alert("Delete Button Clicked");
+  };
+
   return (
-    <h1>Welcome to PlacePrep AI 🚀</h1>
+    <div className="min-h-screen bg-gray-100 flex flex-col items-center justify-center gap-5">
+
+      <h1 className="text-4xl font-bold">
+        PlacePrep AI
+      </h1>
+
+      <Button
+        text="Login"
+        variant="primary"
+        onClick={handleLogin}
+      />
+
+      <Button
+        text="Save"
+        variant="success"
+      />
+
+      <Button
+        text="Delete"
+        variant="danger"
+        onClick={handleDelete}
+      />
+
+    </div>
   );
 }
 
