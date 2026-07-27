@@ -17,8 +17,7 @@ function Button({
   return (
     <button
       onClick={onClick}
-      className={`${buttonStyle} text-white px-6 py-3 rounded-lg font-semibold transition duration-300`}
-    >
+      className={`${buttonStyle} text-white w-full py-3 rounded-lg font-semibold transition duration-300`}>
       {text}
     </button>
   );
