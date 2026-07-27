@@ -1,7 +1,9 @@
 import Button from "./components/ui/Button";
+import { useState } from "react";
 
 function App() {
 
+ const [count, setCount] = useState(0);
   const handleLogin = () => {
     alert("Login Button Clicked");
   };
@@ -26,8 +28,9 @@ function App() {
       <Button
         text="Save"
         variant="success"
+        onClick={() => setCount(count + 1)}
       />
-
+      Increase 
       <Button
         text="Delete"
         variant="danger"
