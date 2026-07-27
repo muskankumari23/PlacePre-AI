@@ -4,10 +4,33 @@ function App() {
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [errors, setErrors] = useState({});
+///////////////////////
+  const validateForm = () => {
+  let newErrors = {};
 
+  if (!email.trim()) {
+    newErrors.email = "Email is required";
+  } else if (!/\S+@\S+\.\S+/.test(email)) {
+    newErrors.email = "Enter a valid email";
+  }
+
+  if (!password.trim()) {
+    newErrors.password = "Password is required";
+  } else if (password.length < 8) {
+    newErrors.password = "Password must be at least 8 characters";
+  }
+
+  setErrors(newErrors);
+
+  return Object.keys(newErrors).length === 0;
+}; 
+//////////////////////////
   const handleLogin = () => {
-    console.log("Email:", email);
-    console.log("Password:", password);
+    if (validateForm()) {
+      console.log("Email:", email);
+      console.log("Password:", password);
+    }
   };
 
   return (
@@ -41,6 +64,9 @@ function App() {
         >
           Login
         </button>
+        <p className="text-sm text-gray-600 mt-4">
+  Welcome, {email || "Guest"}
+</p>
 
       </div>
 
