@@ -1,41 +1,48 @@
-import Button from "./components/ui/Button";
 import { useState } from "react";
 
 function App() {
 
- const [count, setCount] = useState(0);
-  const handleLogin = () => {
-    alert("Login Button Clicked");
-  };
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
-  const handleDelete = () => {
-    alert("Delete Button Clicked");
+  const handleLogin = () => {
+    console.log("Email:", email);
+    console.log("Password:", password);
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 flex flex-col items-center justify-center gap-5">
+    <div className="min-h-screen flex flex-col justify-center items-center gap-5 bg-slate-100">
 
-      <h1 className="text-4xl font-bold">
-        PlacePrep AI
-      </h1>
+      <div className="bg-white p-8 rounded-xl shadow-lg w-96">
 
-      <Button
-        text="Login"
-        variant="primary"
-        onClick={handleLogin}
-      />
+        <h1 className="text-3xl font-bold text-center mb-6">
+          Login
+        </h1>
 
-      <Button
-        text="Save"
-        variant="success"
-        onClick={() => setCount(count + 1)}
-      />
-      Increase 
-      <Button
-        text="Delete"
-        variant="danger"
-        onClick={handleDelete}
-      />
+        <input
+          type="email"
+          placeholder="Enter Email"
+          className="border p-3 rounded-lg w-full mb-4"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+        />
+
+        <input
+          type="password"
+          placeholder="Enter Password"
+          className="border p-3 rounded-lg w-full mb-6"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+        />
+
+        <button
+          onClick={handleLogin}
+          className="bg-blue-600 hover:bg-blue-700 text-white w-full py-3 rounded-lg"
+        >
+          Login
+        </button>
+
+      </div>
 
     </div>
   );
