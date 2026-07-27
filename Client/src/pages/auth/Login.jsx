@@ -1,7 +1,10 @@
 import Button from "../components/ui/Button";
 import Input from "../components/ui/Input";
+import { useNavigate } from "react-router-dom";
 
 function Login() {
+  const navigate = useNavigate();
+
   return (
     <div className="min-h-screen flex items-center justify-center bg-slate-100">
 

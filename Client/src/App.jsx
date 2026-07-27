@@ -1,7 +1,9 @@
 import { useState } from "react";
+import AppRoutes from "./routes/AppRoutes";
 
 function App() {
 
+  return <AppRoutes />;
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState({});
@@ -30,6 +32,8 @@ function App() {
     if (validateForm()) {
       console.log("Email:", email);
       console.log("Password:", password);
+      navigate("/dashboard");
+
     }
   };
 
