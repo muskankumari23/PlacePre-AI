@@ -2,6 +2,8 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import Home from "../pages/Home";
 import Login from "../pages/auth/Login";
+import Register from "../pages/auth/Register";
+import ForgotPassword from "../pages/auth/ForgotPassword";
 
 import Dashboard from "../pages/student/Dashboard";
 import Courses from "../pages/student/Courses";
@@ -11,26 +13,18 @@ import Resume from "../pages/student/Resume";
 import Interview from "../pages/student/Interview";
 import Jobs from "../pages/student/Jobs";
 
-import MainLayout from "../components/layout/MainLayout";
-
-import Register from "../pages/auth/Register";
-import ForgotPassword from "../pages/auth/ForgotPassword";
+import MainLayout from "../components/layouts/MainLayout";
 
 function AppRoutes() {
   return (
     <BrowserRouter>
-
       <Routes>
-
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
+        <Route path="/forgot-password" element={<ForgotPassword />} />
 
         <Route
-         path="/forgot-password"
-  element={<ForgotPassword />}
-  />
-  <Route
           path="/student/dashboard"
           element={
             <MainLayout>
@@ -92,9 +86,7 @@ function AppRoutes() {
             </MainLayout>
           }
         />
-
       </Routes>
-
     </BrowserRouter>
   );
 }
