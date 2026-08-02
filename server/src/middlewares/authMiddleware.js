@@ -3,7 +3,8 @@ import User from "../models/User.js";
 
 export const protect = async (req, res, next) => {
   try {
-
+    console.log("Headers:", req.headers);
+    console.log("Authorization:", req.headers.authorization); 
     let token;
 
     // Token Authorization Header se milega
@@ -32,13 +33,11 @@ export const protect = async (req, res, next) => {
     next();
 
   } catch (error) {
+  console.log("JWT ERROR:", error);
 
-    console.log(error);
-
-    return res.status(401).json({
-      success: false,
-      message: "Token Failed",
-    });
-
-  }
+  return res.status(401).json({
+    success: false,
+    message: error.message,
+  });
+}
 };
