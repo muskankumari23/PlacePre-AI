@@ -73,3 +73,97 @@ export const updateProfile = async (req, res) => {
     });
   }
 };
+export const updateEducation = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { college, degree, year } = req.body;
+
+    const resume = await Resume.findOne({
+      user: req.user._id,
+    });
+
+    if (!resume) {
+      return res.status(404).json({
+        success: false,
+        message: "Resume not found",
+      });
+    }
+
+    const education = resume.education.id(id);
+
+    if (!education) {
+      return res.status(404).json({
+        success: false,
+        message: "Education not found",
+      });
+    }
+
+    if (college !== undefined) education.college = college;
+    if (degree !== undefined) education.degree = degree;
+    if (year !== undefined) education.year = year;
+
+    await resume.save();
+
+    res.status(200).json({
+      success: true,
+      message: "Education updated successfully",
+      education,
+    });
+
+  } catch (error) {
+
+    console.log(error);
+
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+
+  }
+};
+
+export const deleteEducation = async (req, res) => {
+  try {
+
+    const { id } = req.params;
+
+    const resume = await Resume.findOne({
+      user: req.user._id,
+    });
+
+    if (!resume) {
+      return res.status(404).json({
+        success: false,
+        message: "Resume not found",
+      });
+    }
+
+    const education = resume.education.id(id);
+
+    if (!education) {
+      return res.status(404).json({
+        success: false,
+        message: "Education not found",
+      });
+    }
+
+    education.deleteOne();
+
+    await resume.save();
+
+    res.status(200).json({
+      success: true,
+      message: "Education deleted successfully",
+    });
+
+  } catch (error) {
+
+    console.log(error);
+
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+
+  }
+};

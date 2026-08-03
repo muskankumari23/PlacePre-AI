@@ -192,3 +192,244 @@ export const addEducation = async (req, res) => {
 
   }
 };
+export const addExperience = async (req, res) => {
+  try {
+    const { company, role, duration } = req.body;
+
+    const resume = await Resume.findOne({
+      user: req.user._id,
+    });
+
+    if (!resume) {
+      return res.status(404).json({
+        success: false,
+        message: "Resume not found",
+      });
+    }
+
+    resume.experience.push({
+      company,
+      role,
+      duration,
+    });
+
+    await resume.save();
+
+    res.status(200).json({
+      success: true,
+      message: "Experience added successfully",
+      experience: resume.experience,
+    });
+
+  } catch (error) {
+
+    console.log(error);
+
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+
+  }
+};
+export const updateExperience = async (req, res) => {
+  try {
+
+    const { id } = req.params;
+    const { company, role, duration } = req.body;
+
+    const resume = await Resume.findOne({
+      user: req.user._id,
+    });
+
+    if (!resume) {
+      return res.status(404).json({
+        success: false,
+        message: "Resume not found",
+      });
+    }
+
+    const experience = resume.experience.id(id);
+
+    if (!experience) {
+      return res.status(404).json({
+        success: false,
+        message: "Experience not found",
+      });
+    }
+
+    if (company !== undefined) experience.company = company;
+    if (role !== undefined) experience.role = role;
+    if (duration !== undefined) experience.duration = duration;
+
+    await resume.save();
+
+    res.status(200).json({
+      success: true,
+      message: "Experience updated successfully",
+      experience,
+    });
+
+  } catch (error) {
+
+    console.log(error);
+
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+
+  }
+};
+export const addProject = async (req, res) => {
+  try {
+
+    const {
+      title,
+      description,
+      technologies,
+      github,
+      liveDemo,
+    } = req.body;
+
+    const resume = await Resume.findOne({
+      user: req.user._id,
+    });
+
+    if (!resume) {
+      return res.status(404).json({
+        success: false,
+        message: "Resume not found",
+      });
+    }
+
+    resume.projects.push({
+      title,
+      description,
+      technologies,
+      github,
+      liveDemo,
+    });
+
+    await resume.save();
+
+    res.status(200).json({
+      success: true,
+      message: "Project added successfully",
+      projects: resume.projects,
+    });
+
+  } catch (error) {
+
+    console.log(error);
+
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+
+  }
+};
+export const updateProject = async (req, res) => {
+  try {
+
+    const { id } = req.params;
+
+    const {
+      title,
+      description,
+      technologies,
+      github,
+      liveDemo,
+    } = req.body;
+
+    const resume = await Resume.findOne({
+      user: req.user._id,
+    });
+
+    if (!resume) {
+      return res.status(404).json({
+        success: false,
+        message: "Resume not found",
+      });
+    }
+
+    const project = resume.projects.id(id);
+
+    if (!project) {
+      return res.status(404).json({
+        success: false,
+        message: "Project not found",
+      });
+    }
+
+    if (title !== undefined) project.title = title;
+    if (description !== undefined) project.description = description;
+    if (technologies !== undefined) project.technologies = technologies;
+    if (github !== undefined) project.github = github;
+    if (liveDemo !== undefined) project.liveDemo = liveDemo;
+
+    await resume.save();
+
+    res.status(200).json({
+      success: true,
+      message: "Project updated successfully",
+      project,
+    });
+
+  } catch (error) {
+
+    console.log(error);
+
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+
+  }
+};
+export const deleteProject = async (req, res) => {
+  try {
+
+    const { id } = req.params;
+
+    const resume = await Resume.findOne({
+      user: req.user._id,
+    });
+
+    if (!resume) {
+      return res.status(404).json({
+        success: false,
+        message: "Resume not found",
+      });
+    }
+
+    const project = resume.projects.id(id);
+
+    if (!project) {
+      return res.status(404).json({
+        success: false,
+        message: "Project not found",
+      });
+    }
+
+    project.deleteOne();
+
+    await resume.save();
+
+    res.status(200).json({
+      success: true,
+      message: "Project deleted successfully",
+    });
+
+  } catch (error) {
+
+    console.log(error);
+
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+
+  }
+};

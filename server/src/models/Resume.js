@@ -69,15 +69,23 @@ profileImage: {
       },
     ],
 
-    projects: [
+   projects: [
+  {
+    title: String,
+    description: String,
+
+    technologies: [
       {
-        title: String,
-        description: String,
-        github: String,
+        type: String,
       },
     ],
-  },
-  {
+
+    github: String,
+
+    liveDemo: String,
+    },
+   ],
+  
     timestamps: true,
   }
 );

@@ -5,7 +5,13 @@ import {
   createResume,
   getResume,
   updateResume,
-  deleteResume
+  deleteResume,
+  addEducation,
+  updateEducation,
+  deleteEducation,
+  addExperience,
+  updateExperience,
+  deleteExperience,
 } from "../controllers/resumeController.js";
 
 const router = express.Router();
@@ -14,6 +20,18 @@ router.post("/", protect, createResume);
 router.get("/", protect, getResume);
 router.put("/", protect, updateResume);
 router.delete("/", protect, deleteResume);
+
 router.post("/education", protect, addEducation);
+router.post("/education", protect, addEducation);
+router.put("/education/:id", protect, updateEducation);
+router.delete("/education/:id", protect, deleteEducation);
+
+router.post("/experience", protect, addExperience);
+router.put("/experience/:id", protect, updateExperience);
+router.delete("/experience/:id", protect, deleteExperience);
+
+router.post("/project", protect, addProject);
+router.put("/project/:id", protect, updateProject);
+router.delete("/project/:id", protect, deleteProject);
 
 export default router;
