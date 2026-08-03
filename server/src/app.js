@@ -13,6 +13,7 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 app.use("/api/dashboard", dashboardRoutes);
+app.use("/api/resume", resumeRoutes);
 
 app.get("/", (req, res) => {
   res.send("🚀 PlacePrep AI Backend Running");
