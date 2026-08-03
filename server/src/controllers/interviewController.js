@@ -1,0 +1,5 @@
+generateQuestions()
+submitAnswers()
+getInterviewHistory()
+getInterviewById()
+deleteInterview()
