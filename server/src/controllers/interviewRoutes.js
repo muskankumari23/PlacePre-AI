@@ -1,9 +1,30 @@
-POST /generate
+import express from "express";
 
-POST /submit
+import {
+  generateQuestions,
+  submitAnswers,
+  getInterviewHistory,
+  getInterviewById,
+  deleteInterview,
+} from "../controllers/interviewController.js";
 
-GET /history
+import { protect } from "../middlewares/authMiddleware.js";
 
-GET /:id
+const router = express.Router();
 
-DELETE /:id
+// Generate Interview Questions
+router.post("/generate", protect, generateQuestions);
+
+// Submit Interview Answers
+router.post("/submit", protect, submitAnswers);
+
+// Interview History
+router.get("/history", protect, getInterviewHistory);
+
+// Single Interview
+router.get("/:id", protect, getInterviewById);
+
+// Delete Interview
+router.delete("/:id", protect, deleteInterview);
+
+export default router;
