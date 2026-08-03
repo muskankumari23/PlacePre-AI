@@ -18,7 +18,35 @@ const resumeSchema = new mongoose.Schema(
       type: String,
       default: "",
     },
+phone: {
+  type: String,
+  default: "",
+},
 
+address: {
+  type: String,
+  default: "",
+},
+
+linkedin: {
+  type: String,
+  default: "",
+},
+
+github: {
+  type: String,
+  default: "",
+},
+
+portfolio: {
+  type: String,
+  default: "",
+},
+
+profileImage: {
+  type: String,
+  default: "",
+},
     skills: [
       {
         type: String,
