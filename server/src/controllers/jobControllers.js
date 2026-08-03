@@ -146,3 +146,29 @@ export const applyJob = async (req, res) => {
 
   }
 };
+export const getAppliedJobs = async (req, res) => {
+  try {
+
+    const jobs = await Job.find({
+      applicants: req.user._id,
+    })
+      .populate("company", "name email")
+      .sort({ createdAt: -1 });
+
+    res.status(200).json({
+      success: true,
+      count: jobs.length,
+      jobs,
+    });
+
+  } catch (error) {
+
+    console.log(error);
+
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+
+  }
+};
