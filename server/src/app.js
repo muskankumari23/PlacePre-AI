@@ -7,6 +7,7 @@ import dashboardRoutes from "./routes/dashboardRoutes.js";
 import resumeRoutes from "./routes/resumeRoutes.js";
 import jobRoutes from "./routes/jobRoutes.js";
 import applicationRoutes from "./routes/applicationRoutes.js";
+import companyRoutes from "./routes/companyRoutes.js";
 
 dotenv.config();
 
@@ -17,12 +18,9 @@ app.use(express.json());
 app.use("/api/dashboard", dashboardRoutes);
 app.use("/api/resume", resumeRoutes);
 app.use("/api/jobs", jobRoutes);
-app.use("/api/applications", applicationRoutes
-);
-
-app.get("/", (req, res) => {
-  res.send("🚀 PlacePrep AI Backend Running");
-});
+app.use("/api/applications", applicationRoutes);
+app.use("/api/company", companyRoutes);
+app.get("/", (req, res) => {res.send("🚀 PlacePrep AI Backend Running");});
 
 app.use("/api/auth", authRoutes);
 app.use("/api/user", userRoutes); 
