@@ -24,8 +24,7 @@ app.use("/api/company", companyRoutes);
 app.get("/", (req, res) => {res.send("🚀 PlacePrep AI Backend Running");});
 
 app.use("/api/auth", authRoutes);
-app.use("/api/user", userRoutes); 
-app.use("/api/resume", resumeRoutes);
+app.use("/api/user", userRoutes);
 app.use("/api/interview", interviewRoutes);
 
 export default app;

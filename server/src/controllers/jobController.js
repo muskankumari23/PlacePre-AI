@@ -2,18 +2,17 @@ import Job from "../models/Job.js";
 import Application from "../models/Application.js";
 import Resume from "../models/Resume.js";
 
+// Create a new job post
 export const createJob = async (req, res) => {
   try {
-    const {
-      title,
-      description,
-      skills,
-      location,
-      salary,
-      experience,
-      jobType,
-      deadline,
-    } = req.body;
+    const { title, description, skills, location, salary, experience, jobType, deadline } = req.body;
+
+    if (!title || !description) {
+      return res.status(400).json({
+        success: false,
+        message: "Title and description are required",
+      });
+    }
 
     const job = await Job.create({
       company: req.user._id,
@@ -41,35 +40,16 @@ export const createJob = async (req, res) => {
   }
 };
 
+// Get all jobs
 export const getAllJobs = async (req, res) => {
   try {
-    const { keyword, location, jobType, page = 1, limit = 10 } = req.query;
-    const query = {};
-
-    if (keyword) {
-      query.title = { $regex: keyword, $options: "i" };
-    }
-
-    if (location) {
-      query.location = { $regex: location, $options: "i" };
-    }
-
-    if (jobType) {
-      query.jobType = jobType;
-    }
-
-    const totalJobs = await Job.countDocuments(query);
-    const jobs = await Job.find(query)
+    const jobs = await Job.find()
       .populate("company", "name email")
-      .sort({ createdAt: -1 })
-      .skip((page - 1) * limit)
-      .limit(Number(limit));
+      .sort({ createdAt: -1 });
 
     res.status(200).json({
       success: true,
-      currentPage: Number(page),
-      totalPages: Math.ceil(totalJobs / limit),
-      totalJobs,
+      count: jobs.length,
       jobs,
     });
   } catch (error) {
@@ -81,12 +61,10 @@ export const getAllJobs = async (req, res) => {
   }
 };
 
+// Get job by ID
 export const getJobById = async (req, res) => {
   try {
-    const { id } = req.params;
-    const job = await Job.findById(id)
-      .populate("company", "name email role")
-      .populate("applicants", "name email");
+    const job = await Job.findById(req.params.id).populate("company", "name email");
 
     if (!job) {
       return res.status(404).json({
@@ -108,11 +86,13 @@ export const getJobById = async (req, res) => {
   }
 };
 
+// Apply to a job
 export const applyJob = async (req, res) => {
   try {
-    const { id } = req.params;
-    const job = await Job.findById(id);
+    const jobId = req.params.id;
+    const { coverLetter } = req.body;
 
+    const job = await Job.findById(jobId);
     if (!job) {
       return res.status(404).json({
         success: false,
@@ -120,27 +100,30 @@ export const applyJob = async (req, res) => {
       });
     }
 
-    const alreadyApplied = await Application.findOne({
+    // Check existing application
+    const existingApplication = await Application.findOne({
       student: req.user._id,
-      job: id,
+      job: jobId,
     });
 
-    if (alreadyApplied) {
+    if (existingApplication) {
       return res.status(400).json({
         success: false,
-        message: "Already applied",
+        message: "You have already applied for this job",
       });
     }
 
-    const resume = await Resume.findOne({ user: req.user._id });
+    // Find student's resume
+    const userResume = await Resume.findOne({ user: req.user._id });
 
     const application = await Application.create({
       student: req.user._id,
-      job: id,
-      resume: resume?._id,
+      job: jobId,
+      resume: userResume ? userResume._id : null,
+      coverLetter: coverLetter || "",
     });
 
-    // Also add student to job.applicants array if not present
+    // Add applicant to job applicants array
     if (!job.applicants.includes(req.user._id)) {
       job.applicants.push(req.user._id);
       await job.save();
@@ -148,7 +131,7 @@ export const applyJob = async (req, res) => {
 
     res.status(201).json({
       success: true,
-      message: "Application submitted",
+      message: "Applied for job successfully",
       application,
     });
   } catch (error) {
@@ -160,6 +143,7 @@ export const applyJob = async (req, res) => {
   }
 };
 
+// Get jobs applied by current user
 export const getAppliedJobs = async (req, res) => {
   try {
     const applications = await Application.find({ student: req.user._id })
@@ -183,10 +167,10 @@ export const getAppliedJobs = async (req, res) => {
   }
 };
 
+// Update job
 export const updateJob = async (req, res) => {
   try {
-    const { id } = req.params;
-    const job = await Job.findById(id);
+    const job = await Job.findById(req.params.id);
 
     if (!job) {
       return res.status(404).json({
@@ -202,26 +186,7 @@ export const updateJob = async (req, res) => {
       });
     }
 
-    const {
-      title,
-      description,
-      skills,
-      location,
-      salary,
-      experience,
-      jobType,
-      deadline,
-    } = req.body;
-
-    if (title !== undefined) job.title = title;
-    if (description !== undefined) job.description = description;
-    if (skills !== undefined) job.skills = skills;
-    if (location !== undefined) job.location = location;
-    if (salary !== undefined) job.salary = salary;
-    if (experience !== undefined) job.experience = experience;
-    if (jobType !== undefined) job.jobType = jobType;
-    if (deadline !== undefined) job.deadline = deadline;
-
+    Object.assign(job, req.body);
     await job.save();
 
     res.status(200).json({
@@ -238,10 +203,10 @@ export const updateJob = async (req, res) => {
   }
 };
 
+// Delete job
 export const deleteJob = async (req, res) => {
   try {
-    const { id } = req.params;
-    const job = await Job.findById(id);
+    const job = await Job.findById(req.params.id);
 
     if (!job) {
       return res.status(404).json({
@@ -257,7 +222,7 @@ export const deleteJob = async (req, res) => {
       });
     }
 
-    await Job.findByIdAndDelete(id);
+    await Job.findByIdAndDelete(req.params.id);
 
     res.status(200).json({
       success: true,

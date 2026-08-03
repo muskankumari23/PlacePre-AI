@@ -193,6 +193,100 @@ export const addEducation = async (req, res) => {
 
   }
 };
+export const updateEducation = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { college, degree, year } = req.body;
+
+    const resume = await Resume.findOne({
+      user: req.user._id,
+    });
+
+    if (!resume) {
+      return res.status(404).json({
+        success: false,
+        message: "Resume not found",
+      });
+    }
+
+    const education = resume.education.id(id);
+
+    if (!education) {
+      return res.status(404).json({
+        success: false,
+        message: "Education not found",
+      });
+    }
+
+    if (college !== undefined) education.college = college;
+    if (degree !== undefined) education.degree = degree;
+    if (year !== undefined) education.year = year;
+
+    await resume.save();
+
+    res.status(200).json({
+      success: true,
+      message: "Education updated successfully",
+      education,
+    });
+
+  } catch (error) {
+
+    console.log(error);
+
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+
+  }
+};
+
+export const deleteEducation = async (req, res) => {
+  try {
+
+    const { id } = req.params;
+
+    const resume = await Resume.findOne({
+      user: req.user._id,
+    });
+
+    if (!resume) {
+      return res.status(404).json({
+        success: false,
+        message: "Resume not found",
+      });
+    }
+
+    const education = resume.education.id(id);
+
+    if (!education) {
+      return res.status(404).json({
+        success: false,
+        message: "Education not found",
+      });
+    }
+
+    education.deleteOne();
+
+    await resume.save();
+
+    res.status(200).json({
+      success: true,
+      message: "Education deleted successfully",
+    });
+
+  } catch (error) {
+
+    console.log(error);
+
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+
+  }
+};
 export const addExperience = async (req, res) => {
   try {
     const { company, role, duration } = req.body;
@@ -233,135 +327,9 @@ export const addExperience = async (req, res) => {
 
   }
 };
-export const updateEducation = async (req, res) => {
-  try {
-    const { id } = req.params;
-    const { college, degree, year } = req.body;
-
-    const resume = await Resume.findOne({
-      user: req.user._id,
-    });
-
-    if (!resume) {
-      return res.status(404).json({
-        success: false,
-        message: "Resume not found",
-      });
-    }
-
-    const education = resume.education.id(id);
-
-    if (!education) {
-      return res.status(404).json({
-        success: false,
-        message: "Education not found",
-      });
-    }
-
-    if (college !== undefined) education.college = college;
-    if (degree !== undefined) education.degree = degree;
-    if (year !== undefined) education.year = year;
-
-    await resume.save();
-
-    res.status(200).json({
-      success: true,
-      message: "Education updated successfully",
-      education,
-    });
-  } catch (error) {
-    console.log(error);
-    res.status(500).json({
-      success: false,
-      message: error.message,
-    });
-  }
-};
-
-export const deleteEducation = async (req, res) => {
-  try {
-    const { id } = req.params;
-
-    const resume = await Resume.findOne({
-      user: req.user._id,
-    });
-
-    if (!resume) {
-      return res.status(404).json({
-        success: false,
-        message: "Resume not found",
-      });
-    }
-
-    const education = resume.education.id(id);
-
-    if (!education) {
-      return res.status(404).json({
-        success: false,
-        message: "Education not found",
-      });
-    }
-
-    education.deleteOne();
-
-    await resume.save();
-
-    res.status(200).json({
-      success: true,
-      message: "Education deleted successfully",
-    });
-  } catch (error) {
-    console.log(error);
-    res.status(500).json({
-      success: false,
-      message: error.message,
-    });
-  }
-};
-
-export const deleteExperience = async (req, res) => {
-  try {
-    const { id } = req.params;
-
-    const resume = await Resume.findOne({
-      user: req.user._id,
-    });
-
-    if (!resume) {
-      return res.status(404).json({
-        success: false,
-        message: "Resume not found",
-      });
-    }
-
-    const experience = resume.experience.id(id);
-
-    if (!experience) {
-      return res.status(404).json({
-        success: false,
-        message: "Experience not found",
-      });
-    }
-
-    experience.deleteOne();
-
-    await resume.save();
-
-    res.status(200).json({
-      success: true,
-      message: "Experience deleted successfully",
-    });
-  } catch (error) {
-    console.log(error);
-    res.status(500).json({
-      success: false,
-      message: error.message,
-    });
-  }
-};
-
 export const updateExperience = async (req, res) => {
   try {
+
     const { id } = req.params;
     const { company, role, duration } = req.body;
 
@@ -396,6 +364,50 @@ export const updateExperience = async (req, res) => {
       message: "Experience updated successfully",
       experience,
     });
+
+  } catch (error) {
+
+    console.log(error);
+
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+
+  }
+};
+export const deleteExperience = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const resume = await Resume.findOne({
+      user: req.user._id,
+    });
+
+    if (!resume) {
+      return res.status(404).json({
+        success: false,
+        message: "Resume not found",
+      });
+    }
+
+    const experience = resume.experience.id(id);
+
+    if (!experience) {
+      return res.status(404).json({
+        success: false,
+        message: "Experience not found",
+      });
+    }
+
+    experience.deleteOne();
+
+    await resume.save();
+
+    res.status(200).json({
+      success: true,
+      message: "Experience deleted successfully",
+    });
+
   } catch (error) {
     console.log(error);
     res.status(500).json({
