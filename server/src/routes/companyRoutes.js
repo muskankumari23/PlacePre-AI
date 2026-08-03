@@ -4,6 +4,7 @@ import { getCompanyJobs } from "../controllers/companyController.js";
 import {
   getCompanyJobs,
   getJobApplicants,
+   updateApplicationStatus,
 } from "../controllers/companyController.js";
 const router = express.Router();
 
