@@ -134,76 +134,87 @@ export const getJobById = async (req, res) => {
   }
 };
 export const applyJob = async (req, res) => {
-  try {
 
-    const { id } = req.params;
+    try {
 
-    const job = await Job.findById(id);
+        const { id } = req.params;
 
-    if (!job) {
-      return res.status(404).json({
-        success: false,
-        message: "Job not found",
-      });
+        const job = await Job.findById(id);
+
+        if (!job) {
+
+            return res.status(404).json({
+
+                success: false,
+
+                message: "Job not found",
+
+            });
+
+        }
+
+        const alreadyApplied = await Application.findOne({
+
+            student: req.user._id,
+
+            job: id,
+
+        });
+
+        if (alreadyApplied) {
+
+            return res.status(400).json({
+
+                success: false,
+
+                message: "Already applied",
+
+            });
+
+        }
+
+        const resume = await Resume.findOne({
+
+            user: req.user._id,
+
+        });
+
+        const application = await Application.create({
+
+            student: req.user._id,
+
+            job: id,
+
+            resume: resume?._id,
+
+        });
+
+        res.status(201).json({
+
+            success: true,
+
+            message: "Application submitted",
+
+            application,
+
+        });
+
     }
 
-    // Check duplicate application
-    const alreadyApplied = job.applicants.some(
-  (applicant) => applicant.toString() === req.user._id.toString()
-);
+    catch (error) {
 
-    if (alreadyApplied) {
-      return res.status(400).json({
-        success: false,
-        message: "You have already applied for this job",
-      });
+        console.log(error);
+
+        res.status(500).json({
+
+            success: false,
+
+            message: error.message,
+
+        });
+
     }
 
-    job.applicants.push(req.user._id);
-
-    await job.save();
-
-    res.status(200).json({
-      success: true,
-      message: "Job applied successfully",
-    });
-
-  } catch (error) {
-
-    console.log(error);
-
-    res.status(500).json({
-      success: false,
-      message: error.message,
-    });
-
-  }
-};
-export const getAppliedJobs = async (req, res) => {
-  try {
-
-    const jobs = await Job.find({
-      applicants: req.user._id,
-    })
-      .populate("company", "name email")
-      .sort({ createdAt: -1 });
-
-    res.status(200).json({
-      success: true,
-      count: jobs.length,
-      jobs,
-    });
-
-  } catch (error) {
-
-    console.log(error);
-
-    res.status(500).json({
-      success: false,
-      message: error.message,
-    });
-
-  }
 };
 
 export const updateJob = async (req, res) => {
