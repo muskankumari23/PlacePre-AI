@@ -14,5 +14,6 @@ router.post("/", protect, createResume);
 router.get("/", protect, getResume);
 router.put("/", protect, updateResume);
 router.delete("/", protect, deleteResume);
+router.post("/education", protect, addEducation);
 
 export default router;

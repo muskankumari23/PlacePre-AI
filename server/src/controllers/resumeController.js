@@ -152,3 +152,43 @@ export const deleteResume = async (req, res) => {
 
   }
 };
+export const addEducation = async (req, res) => {
+  try {
+    const { college, degree, year } = req.body;
+
+    const resume = await Resume.findOne({
+      user: req.user._id,
+    });
+
+    if (!resume) {
+      return res.status(404).json({
+        success: false,
+        message: "Resume not found",
+      });
+    }
+
+    resume.education.push({
+      college,
+      degree,
+      year,
+    });
+
+    await resume.save();
+
+    res.status(200).json({
+      success: true,
+      message: "Education added successfully",
+      education: resume.education,
+    });
+
+  } catch (error) {
+
+    console.log(error);
+
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+
+  }
+};
