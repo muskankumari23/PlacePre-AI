@@ -1,4 +1,5 @@
 import Resume from "../models/Resume.js";
+import generateResumePDF from "../utils/resumePdf.js";
 
 export const createResume = async (req, res) => {
   try {
@@ -432,4 +433,41 @@ export const deleteProject = async (req, res) => {
     });
 
   }
+};
+export const downloadResume = async (req, res) => {
+
+  try {
+
+    const resume = await Resume.findOne({
+      user: req.user._id
+    }).populate(
+      "user",
+      "name email"
+    );
+
+    if (!resume) {
+
+      return res.status(404).json({
+        success:false,
+        message:"Resume not found"
+      });
+
+    }
+
+    generateResumePDF(
+      resume,
+      res
+    );
+
+  } catch (error) {
+
+    console.log(error);
+
+    res.status(500).json({
+      success:false,
+      message:error.message
+    });
+
+  }
+
 };

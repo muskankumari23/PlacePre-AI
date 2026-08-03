@@ -12,6 +12,7 @@ import {
   addExperience,
   updateExperience,
   deleteExperience,
+  downloadResume,
 } from "../controllers/resumeController.js";
 
 const router = express.Router();
@@ -33,5 +34,7 @@ router.delete("/experience/:id", protect, deleteExperience);
 router.post("/project", protect, addProject);
 router.put("/project/:id", protect, updateProject);
 router.delete("/project/:id", protect, deleteProject);
+
+router.get("/download", protect, downloadResume);
 
 export default router;
