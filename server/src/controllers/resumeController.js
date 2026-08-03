@@ -64,3 +64,57 @@ export const getResume = async (req, res) => {
     });
   }
 };
+export const updateResume = async (req, res) => {
+  try {
+
+    const resume = await Resume.findOne({
+      user: req.user._id,
+    });
+
+    if (!resume) {
+      return res.status(404).json({
+        success: false,
+        message: "Resume not found",
+      });
+    }
+
+    const {
+      title,
+      summary,
+      skills,
+      education,
+      experience,
+      projects,
+    } = req.body;
+
+    if (title !== undefined) resume.title = title;
+
+    if (summary !== undefined) resume.summary = summary;
+
+    if (skills !== undefined) resume.skills = skills;
+
+    if (education !== undefined) resume.education = education;
+
+    if (experience !== undefined) resume.experience = experience;
+
+    if (projects !== undefined) resume.projects = projects;
+
+    await resume.save();
+
+    res.status(200).json({
+      success: true,
+      message: "Resume updated successfully",
+      resume,
+    });
+
+  } catch (error) {
+
+    console.log(error);
+
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+
+  }
+};
