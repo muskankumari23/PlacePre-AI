@@ -1,5 +1,4 @@
 import express from "express";
-import { createResume } from "../controllers/resumeController.js";
 import { protect } from "../middlewares/authMiddleware.js";
 import {
   createResume,
@@ -12,6 +11,9 @@ import {
   addExperience,
   updateExperience,
   deleteExperience,
+  addProject,
+  updateProject,
+  deleteProject,
   downloadResume,
 } from "../controllers/resumeController.js";
 
@@ -22,7 +24,6 @@ router.get("/", protect, getResume);
 router.put("/", protect, updateResume);
 router.delete("/", protect, deleteResume);
 
-router.post("/education", protect, addEducation);
 router.post("/education", protect, addEducation);
 router.put("/education/:id", protect, updateEducation);
 router.delete("/education/:id", protect, deleteEducation);

@@ -1,6 +1,5 @@
 import express from "express";
 import { protect } from "../middlewares/authMiddleware.js";
-import { getCompanyJobs } from "../controllers/companyController.js";
 import {
   getCompanyJobs,
   getJobApplicants,

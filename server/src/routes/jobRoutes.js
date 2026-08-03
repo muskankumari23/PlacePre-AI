@@ -1,5 +1,4 @@
 import express from "express";
-import { createJob } from "../controllers/jobController.js";
 import { protect } from "../middlewares/authMiddleware.js";
 import {
   createJob,
