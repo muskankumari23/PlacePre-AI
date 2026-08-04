@@ -1,9 +1,11 @@
 import express from "express";
+
+import { getDashboard } from "../controllers/dashboardController.js";
+
 import { protect } from "../middlewares/authMiddleware.js";
-import { getStudentDashboard } from "../controllers/dashboardController.js";
 
 const router = express.Router();
 
-router.get("/", protect, getStudentDashboard);
+router.get("/", protect, getDashboard);
 
 export default router;

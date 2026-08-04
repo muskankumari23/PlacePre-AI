@@ -9,6 +9,7 @@ import jobRoutes from "./routes/jobRoutes.js";
 import applicationRoutes from "./routes/applicationRoutes.js";
 import companyRoutes from "./routes/companyRoutes.js";
 import interviewRoutes from "./routes/interviewRoutes.js";
+import dashboardRoutes from "./routes/dashboardRoutes.js";
 
 dotenv.config();
 
@@ -26,5 +27,7 @@ app.get("/", (req, res) => {res.send("🚀 PlacePrep AI Backend Running");});
 app.use("/api/auth", authRoutes);
 app.use("/api/user", userRoutes);
 app.use("/api/interview", interviewRoutes);
+
+app.use("/api/dashboard", dashboardRoutes);
 
 export default app;
