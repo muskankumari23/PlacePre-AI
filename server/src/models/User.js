@@ -32,6 +32,34 @@ const userSchema = new mongoose.Schema(
       type: String,
       default: "",
     },
+
+    skills: {
+      type: [String],
+      default: [],
+    },
+
+    education: [
+      {
+        degree: { type: String },
+        institution: { type: String },
+        year: { type: String },
+      },
+    ],
+
+    experience: [
+      {
+        title: { type: String },
+        company: { type: String },
+        duration: { type: String },
+        description: { type: String },
+      },
+    ],
+
+    careerPreferences: {
+      preferredRoles: { type: [String], default: [] },
+      preferredLocations: { type: [String], default: [] },
+      expectedSalary: { type: String, default: "" },
+    },
   },
   {
     timestamps: true,
