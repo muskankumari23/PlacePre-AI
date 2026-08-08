@@ -77,3 +77,22 @@ export const updateProfile = async (token, profileData) => {
 
   return data;
 };
+
+// ================= Get Dashboard =================
+export const getDashboard = async (token) => {
+  const res = await fetch(`${API_URL}/api/dashboard`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  const data = await res.json();
+
+  if (!data.success) {
+    throw new Error(data.message || "Failed to fetch dashboard");
+  }
+
+  return data;
+};
