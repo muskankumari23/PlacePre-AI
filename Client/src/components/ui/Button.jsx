@@ -2,6 +2,7 @@ function Button({
   text,
   variant = "primary",
   onClick,
+  disabled = false,
 }) {
 
   let buttonStyle = "";
@@ -17,7 +18,8 @@ function Button({
   return (
     <button
       onClick={onClick}
-      className={`${buttonStyle} text-white w-full py-3 rounded-lg font-semibold transition duration-300`}>
+      disabled={disabled}
+      className={`${buttonStyle} text-white w-full py-3 rounded-lg font-semibold transition duration-300 ${disabled ? "opacity-50 cursor-not-allowed" : "cursor-pointer"}`}>
       {text}
     </button>
   );

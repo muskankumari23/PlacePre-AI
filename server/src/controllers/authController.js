@@ -9,7 +9,7 @@ export const registerUser = async (req, res) => {
   try {
     const { name, email, password, role } = req.body;
 
-    // Validation
+    // Validation — all fields required
     if (!name || !email || !password || !role) {
       return res.status(400).json({
         success: false,
@@ -17,8 +17,34 @@ export const registerUser = async (req, res) => {
       });
     }
 
+    // Validate email format
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      return res.status(400).json({
+        success: false,
+        message: "Please enter a valid email address",
+      });
+    }
+
+    // Validate password strength
+    if (password.length < 6) {
+      return res.status(400).json({
+        success: false,
+        message: "Password must be at least 6 characters",
+      });
+    }
+
+    // Validate role
+    const allowedRoles = ["student", "company"];
+    if (!allowedRoles.includes(role)) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid role. Allowed roles: student, company",
+      });
+    }
+
     // Check existing user
-    const existingUser = await User.findOne({ email });
+    const existingUser = await User.findOne({ email: email.toLowerCase() });
 
     if (existingUser) {
       return res.status(400).json({
@@ -32,8 +58,8 @@ export const registerUser = async (req, res) => {
 
     // Create User
     const user = await User.create({
-      name,
-      email,
+      name: name.trim(),
+      email: email.toLowerCase().trim(),
       password: hashedPassword,
       role,
     });
@@ -54,11 +80,11 @@ export const registerUser = async (req, res) => {
     });
 
   } catch (error) {
-    console.log(error);
+    console.log("Register Error:", error.message);
 
     res.status(500).json({
       success: false,
-      message: error.message,
+      message: "Server error. Please try again later.",
     });
   }
 };
@@ -81,7 +107,7 @@ export const loginUser = async (req, res) => {
     }
 
     // Find User
-    const user = await User.findOne({ email });
+    const user = await User.findOne({ email: email.toLowerCase() });
 
     if (!user) {
       return res.status(400).json({
@@ -116,13 +142,11 @@ export const loginUser = async (req, res) => {
     });
 
   } catch (error) {
-
-    console.log(error);
+    console.log("Login Error:", error.message);
 
     res.status(500).json({
       success: false,
-      message: error.message,
+      message: "Server error. Please try again later.",
     });
-
   }
 };
