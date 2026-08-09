@@ -3,7 +3,16 @@ import generateResumePDF from "../utils/resumePdf.js";
 
 export const createResume = async (req, res) => {
   try {
-    const { title, summary, skills } = req.body;
+    const {
+      title,
+      summary,
+      skills,
+      phone,
+      address,
+      linkedin,
+      github,
+      portfolio,
+    } = req.body;
 
     // Check if user already has a resume
     const existingResume = await Resume.findOne({ user: req.user._id });
@@ -11,15 +20,20 @@ export const createResume = async (req, res) => {
     if (existingResume) {
       return res.status(400).json({
         success: false,
-        message: "Resume already exists",
+        message: "Resume already exists. Use PUT /api/resume to update it.",
       });
     }
 
     const resume = await Resume.create({
       user: req.user._id,
-      title,
-      summary,
-      skills,
+      title: title || "My Resume",
+      summary: summary || "",
+      skills: skills || [],
+      phone: phone || "",
+      address: address || "",
+      linkedin: linkedin || "",
+      github: github || "",
+      portfolio: portfolio || "",
     });
 
     res.status(201).json({
@@ -83,36 +97,42 @@ export const updateResume = async (req, res) => {
       title,
       summary,
       skills,
+      phone,
+      address,
+      linkedin,
+      github,
+      portfolio,
       education,
       experience,
       projects,
     } = req.body;
 
     if (title !== undefined) resume.title = title;
-
     if (summary !== undefined) resume.summary = summary;
-
     if (skills !== undefined) resume.skills = skills;
-
+    if (phone !== undefined) resume.phone = phone;
+    if (address !== undefined) resume.address = address;
+    if (linkedin !== undefined) resume.linkedin = linkedin;
+    if (github !== undefined) resume.github = github;
+    if (portfolio !== undefined) resume.portfolio = portfolio;
     if (education !== undefined) resume.education = education;
-
     if (experience !== undefined) resume.experience = experience;
-
     if (projects !== undefined) resume.projects = projects;
-await resume.save();
 
-const updatedResume = await Resume.findById(resume._id)
-  .populate("user", "name email role");
+    await resume.save();
 
-res.status(200).json({
-  success: true,
-  message: "Resume updated successfully",
-  resume: updatedResume,
-});
+    const updatedResume = await Resume.findById(resume._id)
+      .populate("user", "name email role");
+
+    res.status(200).json({
+      success: true,
+      message: "Resume updated successfully",
+      resume: updatedResume,
+    });
 
   } catch (error) {
 
-    console.log(error);
+    console.error("updateResume error:", error);
 
     res.status(500).json({
       success: false,
