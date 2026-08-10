@@ -1,10 +1,12 @@
 import { Routes, Route } from "react-router-dom";
 
+// Public pages
 import Home from "../pages/Home";
 import Login from "../pages/auth/Login";
 import Register from "../pages/auth/Register";
 import ForgotPassword from "../pages/auth/ForgotPassword";
 
+// Student pages
 import Dashboard from "../pages/student/Dashboard";
 import Courses from "../pages/student/Courses";
 import DSA from "../pages/student/DSA";
@@ -13,19 +15,22 @@ import Resume from "../pages/student/Resume";
 import Interview from "../pages/student/Interview";
 import Jobs from "../pages/student/Jobs";
 
+// Components
 import MainLayout from "../components/layouts/MainLayout";
 import ProtectedRoute from "../components/ProtectedRoute";
 
 function AppRoutes() {
   return (
     <Routes>
-      {/* ── Public Routes ── */}
+
+      {/* Public Routes */}
       <Route path="/" element={<Home />} />
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
       <Route path="/forgot-password" element={<ForgotPassword />} />
 
-      {/* ── Protected Student Routes ── */}
+      {/* Protected Student Routes */}
+
       <Route
         path="/student/dashboard"
         element={
@@ -102,6 +107,7 @@ function AppRoutes() {
           </ProtectedRoute>
         }
       />
+
     </Routes>
   );
 }
