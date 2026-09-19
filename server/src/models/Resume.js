@@ -18,35 +18,35 @@ const resumeSchema = new mongoose.Schema(
       type: String,
       default: "",
     },
-phone: {
-  type: String,
-  default: "",
-},
+    phone: {
+      type: String,
+      default: "",
+    },
 
-address: {
-  type: String,
-  default: "",
-},
+    address: {
+      type: String,
+      default: "",
+    },
 
-linkedin: {
-  type: String,
-  default: "",
-},
+    linkedin: {
+      type: String,
+      default: "",
+    },
 
-github: {
-  type: String,
-  default: "",
-},
+    github: {
+      type: String,
+      default: "",
+    },
 
-portfolio: {
-  type: String,
-  default: "",
-},
+    portfolio: {
+      type: String,
+      default: "",
+    },
 
-profileImage: {
-  type: String,
-  default: "",
-},
+    profileImage: {
+      type: String,
+      default: "",
+    },
     skills: [
       {
         type: String,
@@ -69,22 +69,22 @@ profileImage: {
       },
     ],
 
-   projects: [
-  {
-    title: String,
-    description: String,
-
-    technologies: [
+    projects: [
       {
-        type: String,
+        title: String,
+        description: String,
+
+        technologies: [
+          {
+            type: String,
+          },
+        ],
+
+        github: String,
+
+        liveDemo: String,
       },
     ],
-
-    github: String,
-
-    liveDemo: String,
-    },
-   ],
   },
   {
     timestamps: true,
